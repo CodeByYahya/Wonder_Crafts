@@ -10,6 +10,7 @@ import {
   InputLabel,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import Image from "next/image";
 
 interface DetailModalProps {
   open: boolean;
@@ -108,8 +109,7 @@ const DetailModal: React.FC<DetailModalProps> = ({
           }}
         >
           <Box sx={{ flex: 1, paddingRight: 2 }}>
-           
-          <Box
+            <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
@@ -117,14 +117,21 @@ const DetailModal: React.FC<DetailModalProps> = ({
                 mt: 2,
               }}
             >
-              <InputLabel sx={{ fontSize: "0.875rem", color: 'black', marginBottom: 1,fontWeight: "bold" }}>
+              <InputLabel
+                sx={{
+                  fontSize: "0.875rem",
+                  color: "black",
+                  marginBottom: 1,
+                  fontWeight: "bold",
+                }}
+              >
                 Booking ID
               </InputLabel>
               <TextField
                 type="number"
                 value={bookingID}
                 size="small"
-               sx={{
+                sx={{
                   fontSize: "0.875rem",
                   width: "60%",
                   // Remove spinner arrows and center the number
@@ -148,7 +155,14 @@ const DetailModal: React.FC<DetailModalProps> = ({
                 mt: 2,
               }}
             >
-              <InputLabel sx={{ fontSize: "0.875rem", color: 'black', marginBottom: 1,fontWeight: "bold" }}>
+              <InputLabel
+                sx={{
+                  fontSize: "0.875rem",
+                  color: "black",
+                  marginBottom: 1,
+                  fontWeight: "bold",
+                }}
+              >
                 Rooms
               </InputLabel>
               <TextField
@@ -163,6 +177,7 @@ const DetailModal: React.FC<DetailModalProps> = ({
                   "& input[type=number]": {
                     MozAppearance: "textfield", // Firefox
                     textAlign: "center", // Center the text inside the input
+                    paddingX:0,
                   },
                   "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
                     {
@@ -181,7 +196,14 @@ const DetailModal: React.FC<DetailModalProps> = ({
                 mt: 2,
               }}
             >
-              <InputLabel sx={{ fontSize: "0.875rem", color: 'black', marginBottom: 1,fontWeight: "bold" }}>
+              <InputLabel
+                sx={{
+                  fontSize: "0.875rem",
+                  color: "black",
+                  marginBottom: 1,
+                  fontWeight: "bold",
+                }}
+              >
                 Number of Guests
               </InputLabel>
               <TextField
@@ -196,6 +218,7 @@ const DetailModal: React.FC<DetailModalProps> = ({
                   "& input[type=number]": {
                     MozAppearance: "textfield", // Firefox
                     textAlign: "center",
+                    paddingX:0,
                   },
                   "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
                     {
@@ -212,7 +235,14 @@ const DetailModal: React.FC<DetailModalProps> = ({
                 mt: 2,
               }}
             >
-              <InputLabel sx={{ fontSize: "0.875rem", color: 'black', marginBottom: 1,fontWeight: "bold" }}>
+              <InputLabel
+                sx={{
+                  fontSize: "0.875rem",
+                  color: "black",
+                  marginBottom: 1,
+                  fontWeight: "bold",
+                }}
+              >
                 Booked Date
               </InputLabel>
               <TextField
@@ -231,13 +261,16 @@ const DetailModal: React.FC<DetailModalProps> = ({
               display: "flex",
               justifyContent: "end",
               alignItems: "start",
+              maxWidth: "90%", borderRadius: "8px" ,
               position: "relative",
             }}
           >
-            <img
+            <Image
               src={imageUrl}
               alt={title}
-              style={{ maxWidth: "80%", borderRadius: "8px" }}
+              layout="fill"
+              objectFit="contain"
+              style={{ }}
             />
           </Box>
         </Box>
@@ -247,7 +280,6 @@ const DetailModal: React.FC<DetailModalProps> = ({
             justifyContent: "space-between",
             alignItems: "center",
             padding: "10px 20px",
-
           }}
         >
           <Box display="flex" alignItems="center">
@@ -261,24 +293,31 @@ const DetailModal: React.FC<DetailModalProps> = ({
             </Typography>
           </Box>
           <Box>
-          <Button variant="contained" sx={{
-            backgroundColor: "#FFFFFF",
-            color:"black",
-            padding: "5px 8px",
-            fontSize: "0.75rem",
-          }} onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button variant="contained" sx={{
-            backgroundColor: "#7B5AFF",
-            padding: "5px 8px",
-            fontSize: "0.75rem",
-            marginLeft: "10px",
-          }} onClick={handleSave}>
-            Okay
-          </Button>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "#FFFFFF",
+                color: "black",
+                padding: "5px 8px",
+                fontSize: "0.75rem",
+              }}
+              onClick={handleClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "#7B5AFF",
+                padding: "5px 8px",
+                fontSize: "0.75rem",
+                marginLeft: "10px",
+              }}
+              onClick={handleSave}
+            >
+              Okay
+            </Button>
           </Box>
-       
         </Box>
       </Box>
     </Modal>

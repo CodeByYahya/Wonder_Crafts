@@ -14,6 +14,7 @@ import { useDropzone } from "react-dropzone";
 import { storage, firestore } from "@/config/firebase"; // Adjust the path as needed
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { collection, doc, setDoc } from "firebase/firestore"; // Import setDoc here
+import Image from "next/image";
 
 // Define types for props
 interface UploadModalProps {
@@ -263,16 +264,32 @@ const UploadModal: React.FC<UploadModalProps> = ({ open, handleClose }) => {
                   Selected file: {file.name}
                 </Typography>
                 {preview && (
-                  <img
+                  // <img
+                  //   src={preview}
+                  //   alt="Preview"
+                  //   style={{
+                  //     marginTop: "16px",
+                  //     maxWidth: "100%",
+                  //    ,
+                  //     borderRadius: "8px",
+                  //   }}
+                  // />
+                  <Box
+                  sx={{
+                    position: 'relative', // Make the Box relative to position the Image
+                    height: "150px", // Set a height for the Box
+                    maxWidth: "100%",
+                    borderRadius: "8px",
+                    overflow: "hidden",
+                  }}
+                >
+                  <Image
                     src={preview}
                     alt="Preview"
-                    style={{
-                      marginTop: "16px",
-                      maxWidth: "100%",
-                      maxHeight: "300px",
-                      borderRadius: "8px",
-                    }}
+                    layout="fill" // Fill the Box
+                    objectFit="contain" // Adjust the image fit
                   />
+                </Box>
                 )}
               </>
             ) : (
