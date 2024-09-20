@@ -1,6 +1,6 @@
 "use client";
 import { Box } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DataCard from "./Card"; // Adjust the import path as necessary
 import DetailModal from "./DetailModal"; // Import the DetailModal
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
@@ -20,13 +20,14 @@ interface UploadedData {
 }
 
 const ChekIns: React.FC = () => {
-  const [data, setData] = React.useState<UploadedData[]>([]); // Set state type
-  const [selectedItem, setSelectedItem] = React.useState<UploadedData | null>(
+  const [data, setData] = useState<UploadedData[]>([]);
+  const [loading,setLoading] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<UploadedData | null>(
     null
   ); // State for selected item
-  const [openModal, setOpenModal] = React.useState<boolean>(false); // State for modal
+  const [openModal, setOpenModal] = useState<boolean>(false); // State for modal
 
-  const fetchUploadedData = async () => {
+  const fetchData = async () => {
     try {
       const querySnapshot = await getDocs(
         collection(firestore, "yourCollection")
@@ -42,7 +43,7 @@ const ChekIns: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchUploadedData();
+    fetchData();
   }, []);
 
   const handleCardClick = (item: UploadedData) => {
@@ -58,6 +59,7 @@ const ChekIns: React.FC = () => {
   const handleUpdate = async (updatedData: Partial<UploadedData>) => {
     if (selectedItem) {
       try {
+        setLoading(true);
         const itemRef = doc(firestore, "yourCollection", selectedItem.id);
         await updateDoc(itemRef, updatedData);
         setData((prevData) =>
@@ -65,6 +67,7 @@ const ChekIns: React.FC = () => {
             item.id === selectedItem.id ? { ...item, ...updatedData } : item
           )
         );
+        setLoading(false);
         handleCloseModal(); // Close the modal after update
       } catch (error) {
         console.error("Error updating document: ", error);
@@ -98,6 +101,7 @@ const ChekIns: React.FC = () => {
       {selectedItem && (
         <DetailModal
           bookingID={selectedItem.bookingId!}
+          loading={loading}
           open={openModal}
           handleClose={handleCloseModal}
           title={selectedItem.title}

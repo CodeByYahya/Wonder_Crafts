@@ -264,16 +264,6 @@ const UploadModal: React.FC<UploadModalProps> = ({ open, handleClose }) => {
                   Selected file: {file.name}
                 </Typography>
                 {preview && (
-                  // <img
-                  //   src={preview}
-                  //   alt="Preview"
-                  //   style={{
-                  //     marginTop: "16px",
-                  //     maxWidth: "100%",
-                  //    ,
-                  //     borderRadius: "8px",
-                  //   }}
-                  // />
                   <Box
                   sx={{
                     position: 'relative', // Make the Box relative to position the Image

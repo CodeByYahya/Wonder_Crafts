@@ -8,6 +8,7 @@ import {
   TextField,
   Button,
   InputLabel,
+  CircularProgress,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
@@ -16,6 +17,7 @@ interface DetailModalProps {
   open: boolean;
   handleClose: () => void;
   title: string;
+  loading:boolean;
   imageUrl: string;
   date: string;
   bookingID: string;
@@ -36,6 +38,7 @@ interface DetailModalProps {
 const DetailModal: React.FC<DetailModalProps> = ({
   bookingID,
   open,
+  loading,
   handleClose,
   title,
   imageUrl,
@@ -177,7 +180,7 @@ const DetailModal: React.FC<DetailModalProps> = ({
                   "& input[type=number]": {
                     MozAppearance: "textfield", // Firefox
                     textAlign: "center", // Center the text inside the input
-                    paddingX:0,
+                    paddingX: 0,
                   },
                   "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
                     {
@@ -218,7 +221,7 @@ const DetailModal: React.FC<DetailModalProps> = ({
                   "& input[type=number]": {
                     MozAppearance: "textfield", // Firefox
                     textAlign: "center",
-                    paddingX:0,
+                    paddingX: 0,
                   },
                   "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
                     {
@@ -261,7 +264,8 @@ const DetailModal: React.FC<DetailModalProps> = ({
               display: "flex",
               justifyContent: "end",
               alignItems: "start",
-              maxWidth: "90%", borderRadius: "8px" ,
+              maxWidth: "90%",
+              borderRadius: "8px",
               position: "relative",
             }}
           >
@@ -270,7 +274,7 @@ const DetailModal: React.FC<DetailModalProps> = ({
               alt={title}
               layout="fill"
               objectFit="contain"
-              style={{ }}
+              style={{}}
             />
           </Box>
         </Box>
@@ -315,7 +319,7 @@ const DetailModal: React.FC<DetailModalProps> = ({
               }}
               onClick={handleSave}
             >
-              Okay
+             {loading ? <CircularProgress size={24} /> : "Okay"}
             </Button>
           </Box>
         </Box>
