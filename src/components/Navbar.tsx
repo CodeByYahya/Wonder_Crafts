@@ -68,7 +68,7 @@ function Navbar() {
 
         <Box sx={{ flexGrow: 0, marginLeft: "16px" }}>
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-            <Avatar alt="Remy Sharp" src="/assets/avatar.png" />
+            <Avatar alt="Remy Sharp" src="/assets/Avatar.png" />
             </IconButton>
         </Box>
       </Toolbar>
