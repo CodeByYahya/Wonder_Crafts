@@ -11,22 +11,13 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDropzone } from "react-dropzone";
-import { storage, firestore } from "@/config/firebase"; // Adjust the path as needed
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { collection, doc, setDoc } from "firebase/firestore"; // Import setDoc here
 import Image from "next/image";
+import { CheckInData  } from "@/types/CheckInsTypes";
 
 // Define types for props
 interface UploadModalProps {
   open: boolean;
   handleClose: () => void;
-}
-
-// Define types for metadata state
-interface Metadata {
-  title: string;
-  rooms: number;
-  noOfGuests: number;
 }
 
 const style = {
@@ -42,15 +33,21 @@ const style = {
   boxShadow: 24,
   p: 0,
 };
+interface UploadModalProps {
+  open: boolean;
+  handleClose: () => void;
+  onSubmit: (metadata: Partial<CheckInData >, file: File) => Promise<void>;
+  loading:boolean
+}
 
-const UploadModal: React.FC<UploadModalProps> = ({ open, handleClose }) => {
+const UploadModal: React.FC<UploadModalProps> = ({ open, handleClose,onSubmit,loading}) => {
   const [file, setFile] = useState<File | null>(null);
-  const [metadata, setMetadata] = useState<Metadata>({
+  const [metadata, setMetadata] = useState<Partial<CheckInData>>({
     title: "",
     rooms: 0,
     noOfGuests: 0,
   });
-  const [loading, setLoading] = useState<boolean>(false);
+ 
   const [preview, setPreview] = useState<string | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
@@ -80,8 +77,8 @@ const UploadModal: React.FC<UploadModalProps> = ({ open, handleClose }) => {
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
     if (!metadata.title) newErrors.title = "Title is required";
-    if (metadata.rooms <= 0) newErrors.rooms = "Rooms must be greater than 0";
-    if (metadata.noOfGuests <= 0)
+    if (metadata?.rooms! <= 0) newErrors.rooms = "Rooms must be greater than 0";
+    if (metadata?.noOfGuests! <= 0)
       newErrors.noOfGuests = "Number of guests must be greater than 0";
     if (!file) newErrors.file = "An image file is required";
 
@@ -92,40 +89,8 @@ const UploadModal: React.FC<UploadModalProps> = ({ open, handleClose }) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validate()) return;
-
-    setLoading(true);
     try {
-      let fileURL = "";
-      if (file) {
-        const uniqueFileName = `${Date.now()}_${file.name}`;
-        const fileRef = ref(storage, `images/${uniqueFileName}`);
-        await uploadBytes(fileRef, file);
-        fileURL = await getDownloadURL(fileRef);
-      }
-
-      // Upload the avatar image from the assets folder with a unique name
-      const avatarPath = "/assets/JohnDoe.png";
-      const response = await fetch(avatarPath);
-      const blob = await response.blob();
-      const uniqueAvatarName = `JohnDoe_${Date.now()}.png`;
-      const avatarRef = ref(storage, `images/${uniqueAvatarName}`);
-      await uploadBytes(avatarRef, blob);
-      const avatarURL = await getDownloadURL(avatarRef);
-
-      // Generate bookingId and bookDate
-      const bookingId = new Date().getTime();
-      const bookDate = new Date().toISOString();
-
-      // Create a new document in Firestore with a unique ID
-      const docRef = doc(collection(firestore, "yourCollection"));
-      await setDoc(docRef, {
-        ...metadata,
-        imageUrl: fileURL,
-        avatarUrl: avatarURL,
-        bookingId,
-        bookDate,
-        name: "John Doe",
-      });
+      await onSubmit(metadata, file as File); 
 
       // Close the modal and reset form
       handleClose();
@@ -133,10 +98,8 @@ const UploadModal: React.FC<UploadModalProps> = ({ open, handleClose }) => {
       setMetadata({ title: "", rooms: 0, noOfGuests: 0 });
       setPreview(null);
     } catch (error) {
-      console.error("Error uploading data with image: ", error);
-    } finally {
-      setLoading(false);
-    }
+      console.error("Error during upload: ", error);
+    } 
   };
 
   return (
@@ -265,21 +228,21 @@ const UploadModal: React.FC<UploadModalProps> = ({ open, handleClose }) => {
                 </Typography>
                 {preview && (
                   <Box
-                  sx={{
-                    position: 'relative', // Make the Box relative to position the Image
-                    height: "150px", // Set a height for the Box
-                    maxWidth: "100%",
-                    borderRadius: "8px",
-                    overflow: "hidden",
-                  }}
-                >
-                  <Image
-                    src={preview}
-                    alt="Preview"
-                    layout="fill" // Fill the Box
-                    objectFit="contain" // Adjust the image fit
-                  />
-                </Box>
+                    sx={{
+                      position: "relative", // Make the Box relative to position the Image
+                      height: "150px", // Set a height for the Box
+                      maxWidth: "100%",
+                      borderRadius: "8px",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <Image
+                      src={preview}
+                      alt="Preview"
+                      layout="fill" // Fill the Box
+                      objectFit="contain" // Adjust the image fit
+                    />
+                  </Box>
                 )}
               </>
             ) : (

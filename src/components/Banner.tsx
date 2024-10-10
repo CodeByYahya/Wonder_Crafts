@@ -2,18 +2,8 @@
 import { useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import Image from "next/image";
-import UploadModal from "./UploadModal"; // Adjust the import path as needed
 
-const Banner: React.FC = () => {
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-
-  const handleOpenModal = () => {
-    setModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
+const Banner: React.FC<{ handleOpenModal: () => void }> = ({ handleOpenModal }) => {
 
   return (
     <>
@@ -31,6 +21,7 @@ const Banner: React.FC = () => {
           height: 300,
           boxSizing: "border-box",
         }}
+        data-aos="fade-down"
       >
         <Image
           src="/assets/Banner.png"
@@ -86,7 +77,6 @@ const Banner: React.FC = () => {
           </Button>
         </Box>
       </Box>
-      <UploadModal open={modalOpen} handleClose={handleCloseModal} />
     </>
   );
 };

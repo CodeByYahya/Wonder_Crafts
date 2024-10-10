@@ -12,28 +12,9 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
+import { DetailModalProps } from "@/types/DetailModalTypes";
 
-interface DetailModalProps {
-  open: boolean;
-  handleClose: () => void;
-  title: string;
-  loading:boolean;
-  imageUrl: string;
-  date: string;
-  bookingID: string;
-  avatarUrl: string;
-  username: string;
-  rooms: number; // New prop for rooms
-  noOfGuests: number; // New prop for number of guests
-  onUpdate: (
-    data: Partial<{
-      title: string;
-      bookDate: string;
-      rooms: number;
-      noOfGuests: number;
-    }>
-  ) => void; // Update prop
-}
+
 
 const DetailModal: React.FC<DetailModalProps> = ({
   bookingID,
@@ -54,13 +35,13 @@ const DetailModal: React.FC<DetailModalProps> = ({
   const [editRooms, setEditRooms] = useState(rooms);
   const [editNoOfGuests, setEditNoOfGuests] = useState(noOfGuests);
   const handleSave = async () => {
-    await onUpdate({
+     onUpdate({
       title: editTitle,
       bookDate: editDate,
       rooms: editRooms,
       noOfGuests: editNoOfGuests,
     });
-    handleClose(); // Close the modal immediately after saving
+    handleClose();
   };
 
   return (
@@ -143,10 +124,10 @@ const DetailModal: React.FC<DetailModalProps> = ({
                     textAlign: "center", // Center the text inside the input
                   },
                   "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
-                    {
-                      WebkitAppearance: "none", // Completely remove the spinner and space in WebKit browsers
-                      margin: 0, // Ensures no space is taken by the spinner
-                    },
+                  {
+                    WebkitAppearance: "none", // Completely remove the spinner and space in WebKit browsers
+                    margin: 0, // Ensures no space is taken by the spinner
+                  },
                 }}
               />
             </Box>
@@ -183,10 +164,10 @@ const DetailModal: React.FC<DetailModalProps> = ({
                     paddingX: 0,
                   },
                   "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
-                    {
-                      WebkitAppearance: "none", // Completely remove the spinner and space in WebKit browsers
-                      margin: 0, // Ensures no space is taken by the spinner
-                    },
+                  {
+                    WebkitAppearance: "none", // Completely remove the spinner and space in WebKit browsers
+                    margin: 0, // Ensures no space is taken by the spinner
+                  },
                 }}
               />
             </Box>
@@ -217,16 +198,15 @@ const DetailModal: React.FC<DetailModalProps> = ({
                 sx={{
                   fontSize: "0.875rem",
                   width: "15%",
-                  // Directly using sx for removing arrows
                   "& input[type=number]": {
-                    MozAppearance: "textfield", // Firefox
+                    MozAppearance: "textfield",
                     textAlign: "center",
                     paddingX: 0,
                   },
                   "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
-                    {
-                      display: "none", // Chrome, Safari, Edge, Opera
-                    },
+                  {
+                    display: "none", // Chrome, Safari, Edge, Opera
+                  },
                 }}
               />
             </Box>
@@ -319,7 +299,7 @@ const DetailModal: React.FC<DetailModalProps> = ({
               }}
               onClick={handleSave}
             >
-             {loading ? <CircularProgress size={24} /> : "Okay"}
+              {loading ? <CircularProgress size={24} /> : "Okay"}
             </Button>
           </Box>
         </Box>

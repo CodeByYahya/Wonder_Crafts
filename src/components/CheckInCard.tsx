@@ -1,15 +1,8 @@
-import React from 'react';
-import { Card, CardContent, CardMedia, Typography, Box, Avatar } from '@mui/material';
+import { Card, CardMedia, Typography, Box, Avatar } from '@mui/material';
+import { CheckInCardProps } from '@/types/CardTypes';
 
-interface DataCardProps {
-  title: string;
-  imageUrl: string;
-  date: string; 
-  avatarUrl: string; 
-  username: string; 
-}
 
-const DataCard: React.FC<DataCardProps> = ({
+const CheckInCard: React.FC<CheckInCardProps> = ({
   title,
   imageUrl,
   date,
@@ -17,7 +10,11 @@ const DataCard: React.FC<DataCardProps> = ({
   username,
 }) => {
   return (
-    <Card sx={{ width: 280, padding: '16px', borderRadius: '8px', boxShadow: 6 }}> {/* Increased box shadow */}
+    <Card sx={{
+      width: 280, padding: '16px', borderRadius: '8px', boxShadow: 6, '&:hover': {
+        cursor: 'pointer'
+      }
+    }} >
       <Box position="relative">
         <CardMedia
           component="img"
@@ -41,7 +38,8 @@ const DataCard: React.FC<DataCardProps> = ({
           Checked In
         </Box>
       </Box>
-      <Box sx={{ padding: '5px 0px 0px 0px' ,
+      <Box sx={{
+        padding: '5px 0px 0px 0px',
         marginTop: '5px',
       }}>
         <Typography gutterBottom variant="h5" fontSize={16} fontWeight="bold" color="black" component="div"> {/* Made text bold */}
@@ -61,4 +59,4 @@ const DataCard: React.FC<DataCardProps> = ({
   );
 };
 
-export default DataCard;
+export default CheckInCard;
